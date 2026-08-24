@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HTML PPT Import Demo</title>
+    <link rel="stylesheet" href="./styles.css?v=20260824-batch-thumbnails-v1" />
+  </head>
+  <body>
+    <header class="toolbar panel">
+      <div class="toolbar-title">
+        <h1>HTML PPT Import Demo</h1>
+        <p>Import an HTML deck, see its real rendering in the center, and control recognized content slots without moving the locked layout.</p>
+      </div>
+
+      <div class="toolbar-actions">
+        <label for="htmlFileInput" class="file-label">
+          <span>Import HTML</span>
+          <input id="htmlFileInput" type="file" accept=".html,text/html" />
+        </label>
+        <label for="projectFolderInput" class="file-label">
+          <span>Import Project Folder</span>
+          <input id="projectFolderInput" type="file" webkitdirectory multiple accept=".html,.css,.js,image/*" />
+        </label>
+        <button id="openFixtureButton" type="button">Open fixture</button>
+        <button id="undoButton" type="button" disabled>Undo</button>
+        <button id="redoButton" type="button" disabled>Redo</button>
+        <button id="exportButton" type="button" disabled>Export final</button>
+        <button id="exportTemplateButton" type="button" disabled>Export template</button>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <aside class="panel column-panel" id="pagesPanel" aria-label="Pages panel"></aside>
+      <div
+        class="pages-resizer"
+        id="pagesResizer"
+        role="separator"
+        aria-orientation="vertical"
+        aria-label="Resize Pages panel"
+        tabindex="0"
+      ></div>
+
+      <section class="column-panel center-column">
+        <section class="panel" id="statusPanel" aria-label="Status panel"></section>
+
+        <section class="panel help-panel" id="helpPanel" aria-label="How to use">
+          <h2>How to use</h2>
+          <ol>
+            <li>Click <strong>Open fixture</strong>, import one HTML file, or choose <strong>Import Project Folder</strong>.</li>
+            <li>Edit text or replace images in the right Slot panel.</li>
+            <li>Use <strong>Display component</strong> to hide or restore a slot in the center preview.</li>
+            <li>Click a Slot title to highlight its matching component, then use Undo/Redo when needed.</li>
+          </ol>
+        </section>
+
+        <div class="preview-frame-shell panel" id="previewPanel">
+          <div class="locked-layout-label">Locked HTML layout · Pages width adjustable</div>
+          <iframe
+            id="previewFrame"
+            title="Preview"
+            sandbox="allow-scripts"
+          ></iframe>
+        </div>
+      </section>
+
+      <aside class="panel column-panel" id="slotsPanel" aria-label="Slots panel"></aside>
+    </main>
+
+    <script type="module" src="./src/main.js?v=20260824-batch-thumbnails-v1"></script>
+  </body>
+</html>

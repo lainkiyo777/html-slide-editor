@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Demo Test Runner</title>
+    <style>
+      body { font-family: ui-sans-serif, system-ui, sans-serif; margin: 24px; }
+      #results > div { margin: 8px 0; padding: 8px 12px; border-radius: 8px; }
+      [data-status="pass"] { background: #e6ffed; color: #14532d; }
+      [data-status="fail"] { background: #ffe4e6; color: #9f1239; }
+      #testSummary { position: sticky; top: 8px; z-index: 1; padding: 10px 12px; border-radius: 8px; font-weight: 700; }
+    </style>
+  </head>
+  <body>
+    <h1>Demo Test Runner</h1>
+    <p id="testSummary">Running tests...</p>
+    <div id="results"></div>
+    <script type="module" src="./test-runner.js"></script>
+  </body>
+</html>

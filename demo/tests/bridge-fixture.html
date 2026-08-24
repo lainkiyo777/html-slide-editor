@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Bridge Fixture</title>
+  </head>
+  <body>
+    <div class="slide" id="slide-1">
+      <h1 data-edit-slot="slide-1-title-1" data-slot-type="text" data-slot-label="Fixture Title" data-slot-locked-layout="true">Fixture Title</h1>
+      <img
+        data-edit-slot="slide-1-image-1"
+        data-slot-type="image"
+        data-slot-label="Fixture Image"
+        data-slot-locked-layout="true"
+        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+        alt="Fixture Image"
+      />
+    </div>
+    <script>
+      try {
+        window.top.document.body.dataset.leaked = 'yes';
+      } catch (error) {
+        window.__bridgeFixtureLeakBlocked = true;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Page Sync Deck</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      .deck {
+        position: relative;
+        width: 960px;
+        height: 540px;
+      }
+
+      .slide {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateX(24px);
+      }
+
+      .slide.is-active {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(0);
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="deck">
+      <section class="slide is-active" id="slide-1"><h1>Slide 1</h1></section>
+      <section class="slide" id="slide-2"><h1>Slide 2</h1></section>
+      <section class="slide" id="slide-3"><h1>Slide 3</h1></section>
+      <section class="slide" id="slide-4"><h1>Slide 4</h1></section>
+      <section class="slide" id="slide-5"><h1>Slide 5</h1></section>
+      <section class="slide" id="slide-6"><h1>Slide 6</h1></section>
+      <section class="slide" id="slide-7"><h1>Slide 7</h1></section>
+      <section class="slide" id="slide-8"><h1>Slide 8</h1></section>
+      <section class="slide" id="slide-9"><h1>Slide 9</h1></section>
+      <section class="slide" id="slide-10"><h1>Slide 10</h1></section>
+    </main>
+
+    <script>
+      (() => {
+        const slides = Array.from(document.querySelectorAll('.slide'));
+        let currentIndex = 0;
+        let parentSetActiveCount = 0;
+
+        function go(index) {
+          currentIndex = Math.max(0, Math.min(slides.length - 1, index));
+          slides.forEach((slide, slideIndex) => {
+            slide.classList.toggle('is-active', slideIndex === currentIndex);
+            slide.classList.toggle('is-prev', slideIndex < currentIndex);
+          });
+          const hashTarget = `#/${currentIndex + 1}`;
+          if (location.hash !== hashTarget) history.replaceState(null, '', hashTarget);
+        }
+
+        function reportState() {
+          window.parent.postMessage({
+            source: 'page-sync-fixture',
+            type: 'state',
+            payload: slides.map((slide) => ({
+              id: slide.id,
+              hidden: slide.hidden,
+              editorActive: slide.dataset.htmlSlotEditorActive ?? null,
+              isActive: slide.classList.contains('is-active'),
+              opacity: getComputedStyle(slide).opacity,
+              pointerEvents: getComputedStyle(slide).pointerEvents,
+              parentSetActiveCount,
+              runtimeIndex: currentIndex,
+              hash: location.hash
+            }))
+          }, '*');
+        }
+
+        window.addEventListener('message', (event) => {
+          if (event.source !== window.parent) return;
+          if (event.data?.source === 'html-slot-editor-parent' && event.data?.type === 'set-active-slide') {
+            parentSetActiveCount += 1;
+            reportState();
+            return;
+          }
+          if (event.data?.source !== 'page-sync-fixture-control' || event.data?.type !== 'go-to') return;
+          go(event.data.payload?.index ?? currentIndex);
+        });
+
+        window.addEventListener('message', (event) => {
+          if (event.source !== window.parent) return;
+          if (event.data?.source !== 'page-sync-fixture-control' || event.data?.type !== 'next') return;
+          go(currentIndex + 1);
+        });
+
+        window.addEventListener('hashchange', () => {
+          const match = /^#\/(\d+)/.exec(location.hash);
+          if (match) go(Number(match[1]) - 1);
+        });
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'ArrowRight') go(currentIndex + 1);
+          if (event.key === 'ArrowLeft') go(currentIndex - 1);
+        });
+
+        new MutationObserver(reportState).observe(document.querySelector('.deck'), {
+          subtree: true,
+          attributes: true,
+          attributeFilter: ['class', 'hidden', 'data-html-slot-editor-active']
+        });
+        go(currentIndex);
+        reportState();
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Simple Deck</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+        background: #080d1d;
+      }
+
+      html,
+      body {
+        height: 100%;
+        min-height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #080d1d;
+        color: #f8fafc;
+      }
+
+      .slides-offset {
+        display: grid;
+        width: 100%;
+        height: 100vh;
+        min-height: 0;
+        padding: 0;
+        background: radial-gradient(circle at 85% 15%, rgba(79, 70, 229, 0.28), transparent 35%), #080d1d;
+      }
+
+      .slide {
+        display: grid;
+        align-content: center;
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        box-sizing: border-box;
+        gap: 10px;
+        padding: 20px;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid rgba(148, 163, 184, 0.24);
+        border-radius: 28px;
+        background: linear-gradient(135deg, #111a3a, #1e1b4b 56%, #312e81);
+        box-shadow: 0 24px 80px rgba(15, 23, 42, 0.5);
+      }
+
+      .slide::after {
+        content: "HTML rendered in iframe";
+        position: absolute;
+        top: 16px;
+        right: 20px;
+        padding: 5px 8px;
+        border: 1px solid rgba(165, 180, 252, 0.35);
+        border-radius: 999px;
+        color: #c7d2fe;
+        font-size: 10px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .slide h1 {
+        max-width: 720px;
+        margin: 0;
+        color: #ffffff;
+        font-size: clamp(28px, 6vw, 82px);
+        line-height: 0.98;
+        letter-spacing: -0.05em;
+      }
+
+      .slide p {
+        max-width: 620px;
+        margin: 0;
+        color: #cbd5e1;
+        font-size: 15px;
+        line-height: 1.25;
+      }
+
+      .slide img {
+        width: 56px;
+        height: 56px;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 24px;
+        background: linear-gradient(135deg, #a5b4fc, #f0abfc);
+        object-fit: cover;
+      }
+
+      .decorative {
+        position: absolute;
+        right: 12%;
+        bottom: 16%;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 30%, #f0abfc, #6366f1 42%, transparent 70%);
+        color: transparent;
+        opacity: 0.72;
+      }
+
+      .note {
+        color: #a5b4fc !important;
+        font-size: 12px !important;
+      }
+
+      .slide[hidden] {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slide">
+      <h1>Title One</h1>
+      <p>First slide body text.</p>
+      <img alt="Example" src="https://example.com/example-1.png" />
+      <div class="decorative">Decoration</div>
+      <p class="note">Before script note</p>
+    </div>
+    <div class="slide">
+      <h1>Title Two</h1>
+      <p>Second slide body text.</p>
+      <img alt="Example" src="https://example.com/example-2.png" />
+      <div class="decorative">Decoration</div>
+      <p class="note">Before script note</p>
+    </div>
+    <script>
+      const note = document.querySelector('.slide .note');
+      if (note) note.textContent = 'This note changed in place.';
+    </script>
+  </body>
+</html>
