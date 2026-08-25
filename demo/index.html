@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>HTML PPT Import Demo</title>
-    <link rel="stylesheet" href="./styles.css?v=20260824-batch-thumbnails-v1" />
+    <link rel="stylesheet" href="./styles.css?v=20260824-panel-layout-v1" />
   </head>
   <body>
     <header class="toolbar panel">
@@ -55,7 +55,7 @@
         </section>
 
         <div class="preview-frame-shell panel" id="previewPanel">
-          <div class="locked-layout-label">Locked HTML layout · Pages width adjustable</div>
+          <div class="locked-layout-label">Locked HTML layout · Side panels adjustable</div>
           <iframe
             id="previewFrame"
             title="Preview"
@@ -64,9 +64,17 @@
         </div>
       </section>
 
+      <div
+        class="slots-resizer"
+        id="slotsResizer"
+        role="separator"
+        aria-orientation="vertical"
+        aria-label="Resize Slots panel"
+        tabindex="0"
+      ></div>
       <aside class="panel column-panel" id="slotsPanel" aria-label="Slots panel"></aside>
     </main>
 
-    <script type="module" src="./src/main.js?v=20260824-batch-thumbnails-v1"></script>
+    <script type="module" src="./src/main.js?v=20260824-panel-layout-v1"></script>
   </body>
 </html>

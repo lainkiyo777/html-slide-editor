@@ -1,5 +1,5 @@
 import { bootstrapEditor } from './editor-ui.js?phase3b-batch=v1';
-import { createPagesResizer } from './pages-resizer.js?pages-resizer=20260814';
+import { createPagesResizer, createSlotsResizer } from './pages-resizer.js?panel-resizers=20260824';
 
 export function htmlSlotEditorBoot(documentRef = document) {
   const editor = bootstrapEditor({
@@ -18,11 +18,17 @@ export function htmlSlotEditorBoot(documentRef = document) {
     shell: documentRef.querySelector('.app-shell'),
     handle: documentRef.querySelector('#pagesResizer')
   });
+  const slotsResizer = createSlotsResizer({
+    document: documentRef,
+    shell: documentRef.querySelector('.app-shell'),
+    handle: documentRef.querySelector('#slotsResizer')
+  });
 
   return {
     ...editor,
     destroy() {
       pagesResizer.destroy();
+      slotsResizer.destroy();
       editor.destroy?.();
     }
   };
