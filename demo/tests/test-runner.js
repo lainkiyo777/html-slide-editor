@@ -1387,6 +1387,44 @@ await test('pages resizer clamps, persists, and responds to pointer and keyboard
   resizer.destroy();
 });
 
+await test('editor shell gives Pages and Slots independent scrolling and a Slots resize handle', async () => {
+  const frame = document.createElement('iframe');
+  frame.style.position = 'fixed';
+  frame.style.left = '-10000px';
+  frame.style.width = '1440px';
+  frame.style.height = '900px';
+  frame.src = '../index.html?panel-layout-test=scroll-and-slots-resize-v2';
+  document.body.append(frame);
+
+  try {
+    await new Promise((resolve, reject) => {
+      frame.addEventListener('load', resolve, { once: true });
+      setTimeout(() => reject(new Error('editor shell did not load')), 5000);
+    });
+
+    const frameDocument = frame.contentDocument;
+    const pagesPanel = frameDocument.querySelector('#pagesPanel');
+    const slotsPanel = frameDocument.querySelector('#slotsPanel');
+    const slotsResizer = frameDocument.querySelector('#slotsResizer');
+    const pagesStyle = frame.contentWindow.getComputedStyle(pagesPanel);
+    const slotsStyle = frame.contentWindow.getComputedStyle(slotsPanel);
+    const diagnostic = JSON.stringify({
+      innerWidth: frame.contentWindow.innerWidth,
+      pagesOverflowY: pagesStyle.overflowY,
+      slotsOverflowY: slotsStyle.overflowY,
+      stylesheets: Array.from(frameDocument.styleSheets, (sheet) => sheet.href)
+    });
+
+    assert(pagesStyle.overflowY === 'auto', `Pages must scroll independently when its content overflows: ${diagnostic}`);
+    assert(slotsStyle.overflowY === 'auto', `Slots must scroll independently when its content overflows: ${diagnostic}`);
+    assert(pagesStyle.maxHeight !== 'none', 'Pages must have a viewport-bounded maximum height');
+    assert(slotsStyle.maxHeight !== 'none', 'Slots must have a viewport-bounded maximum height');
+    assert(slotsResizer?.getAttribute('role') === 'separator', 'Slots must expose an accessible resize handle');
+  } finally {
+    frame.remove();
+  }
+});
+
 await test('sandboxed bridge fixture cannot leak to parent top document', async () => {
   const fixtureHtml = await loadFixture('bridge-fixture.html');
   const { createBridgeScript } = await import('../src/iframe-bridge.js?slot-visibility=20260814-preview-fit-fixture');

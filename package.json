@@ -5,7 +5,7 @@
   "description": "Local visual editor for imported HTML slide projects with synchronized slots and static thumbnails.",
   "type": "module",
   "scripts": {
-    "test": "node --test demo/tests/thumbnail-queue.test.mjs"
+    "test": "node --test demo/tests/thumbnail-queue.test.mjs demo/tests/panel-layout.test.mjs"
   },
   "dependencies": {
     "puppeteer-core": "^25.1.0"

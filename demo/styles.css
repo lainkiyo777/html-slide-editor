@@ -26,12 +26,14 @@ body {
 
 .app-shell {
   display: grid;
-  grid-template-columns: var(--pages-width, 280px) 8px minmax(0, 1fr) 340px;
+  grid-template-columns: var(--pages-width, 280px) 8px minmax(0, 1fr) 8px var(--slots-width, 340px);
   gap: 16px;
+  align-items: start;
   min-height: calc(100vh - 164px);
 }
 
-.pages-resizer {
+.pages-resizer,
+.slots-resizer {
   align-self: stretch;
   position: relative;
   width: 8px;
@@ -43,7 +45,8 @@ body {
   touch-action: none;
 }
 
-.pages-resizer::after {
+.pages-resizer::after,
+.slots-resizer::after {
   content: "";
   position: absolute;
   inset: 0 2px;
@@ -55,12 +58,16 @@ body {
 
 .pages-resizer:hover::after,
 .pages-resizer:focus-visible::after,
-.pages-resizer.is-dragging::after {
+.pages-resizer.is-dragging::after,
+.slots-resizer:hover::after,
+.slots-resizer:focus-visible::after,
+.slots-resizer.is-dragging::after {
   background: var(--accent);
   opacity: 1;
 }
 
-.pages-resizer:focus-visible {
+.pages-resizer:focus-visible,
+.slots-resizer:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
@@ -79,6 +86,29 @@ body {
   border-radius: 16px;
   padding: 16px;
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+#pagesPanel,
+#slotsPanel {
+  max-height: calc(100vh - 164px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 transparent;
+}
+
+#pagesPanel::-webkit-scrollbar,
+#slotsPanel::-webkit-scrollbar {
+  width: 10px;
+}
+
+#pagesPanel::-webkit-scrollbar-thumb,
+#slotsPanel::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: #94a3b8;
+  background-clip: padding-box;
 }
 
 .toolbar {
@@ -323,7 +353,15 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 
-  .pages-resizer {
+  .pages-resizer,
+  .slots-resizer {
     display: none;
+  }
+
+  #pagesPanel,
+  #slotsPanel {
+    max-height: none;
+    overflow-y: visible;
+    scrollbar-gutter: auto;
   }
 }
